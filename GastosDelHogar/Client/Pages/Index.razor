@@ -1,0 +1,65 @@
+﻿@page "/"
+@inject IRepositorio repositorio
+@inject IMostrarMensajes mostrarMensajes
+
+@if (personas == null)
+{
+    <div class="text-center">
+        <Loading></Loading>
+    </div>
+}
+else
+{
+    <h1 class="display-3 text-center mb-3"><strong>@DateTime.Today.ToString("MMMM").ToUpper()</strong></h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>Total de ingresos</td>
+                <td>@totalIngresos.ToString("C", CultureInfo.CreateSpecificCulture("es-AR"))</td>
+            </tr>
+            <tr>
+                <td>Total de gastos</td>
+                <td>@totalGastos.ToString("C", CultureInfo.CreateSpecificCulture("es-AR"))</td>
+            </tr>
+            <tr>
+                <td>Ingresos restantes</td>
+                <td class="@(ingresosRestantes > 0 ? "text-success" : "text-danger")">@ingresosRestantes.ToString("C", CultureInfo.CreateSpecificCulture("es-AR"))</td>
+            </tr>
+        </tbody>
+    </table>
+    <hr />
+
+    <div class="row">
+        <ListadoGenerico Listado="personas">
+            <HayRegistros Context="persona">
+                <div class="col-lg-6 mb-3">
+                    <PersonaIndividual Persona="persona"></PersonaIndividual>
+                </div>
+            </HayRegistros>
+        </ListadoGenerico>
+    </div>
+}
+
+
+
+@code {
+    private List<Persona> personas;
+    private decimal totalGastos = 0;
+    private decimal totalIngresos = 0;
+    private decimal ingresosRestantes = 0;
+
+    protected async override Task OnInitializedAsync()
+    {
+        var responseHttp = await repositorio.Get<List<Persona>>("api/personas");
+        personas = responseHttp.Response;
+        CalcularTotales();
+    }
+
+    private void CalcularTotales()
+    {
+        totalGastos = personas.Sum(x => x.Gastos.Sum(x => x.Monto.Value));
+        totalIngresos = personas.Sum(x => x.Ingresos.Value);
+        ingresosRestantes = totalIngresos - totalGastos;
+    }
+}

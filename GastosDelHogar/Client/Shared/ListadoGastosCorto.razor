@@ -1,0 +1,29 @@
+﻿@inject IRepositorio repositorio
+
+<ListadoGenerico Listado="Gastos">
+    <HayRegistrosCompleto>
+        <table class="table table-striped table-sm">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Monto</th>
+                    <th scope="col">Fecha</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var gasto in Gastos)
+                {
+                    <tr>
+                        <td>@gasto.Nombre</td>
+                        <td>@gasto.Monto.Value.ToString("C", CultureInfo.CreateSpecificCulture("es-AR"))</td>
+                        <td>@gasto.Fecha.Value.ToString("dd/MM/yy")</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </HayRegistrosCompleto>
+</ListadoGenerico>
+
+@code {
+    [Parameter] public List<Gasto> Gastos { get; set; }
+}

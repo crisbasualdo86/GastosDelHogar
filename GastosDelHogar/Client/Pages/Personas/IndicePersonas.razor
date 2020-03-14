@@ -1,0 +1,69 @@
+﻿@page "/personas"
+@inject IRepositorio repositorio
+@inject IMostrarMensajes mostrarMensajes
+
+
+<a class="btn btn-primary mb-5" href="personas/crear">Crear Persona</a>
+
+<ListadoGenerico Listado="personas">
+    <HayRegistrosCompleto>
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">Nombre</th>
+                    <th scope="col">Ingresos</th>
+                    <th scope="col"></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var persona in personas)
+                {
+                    <tr>
+                        <td>@persona.Nombre</td>
+                        <td>@persona.Ingresos.Value.ToString("C", CultureInfo.CreateSpecificCulture("es-AR"))</td>
+                        <td>
+                            <a class="oi oi-pencil text-success mr-sm-3" href="/personas/editar/@persona.Id"></a>
+                            <a class="oi oi-x text-danger" @onclick="@(() => BorrarPersona(persona))" href="personas"></a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </HayRegistrosCompleto>
+</ListadoGenerico>
+
+@code {
+    private List<Persona> personas;
+
+    protected async override Task OnInitializedAsync()
+    {
+        await Cargar();
+    }
+
+    private async Task Cargar()
+    {
+        var responseHttp = await repositorio.Get<List<Persona>>("api/personas");
+        personas = responseHttp.Response;
+    }
+
+    private async Task BorrarPersona(Persona persona)
+    {
+        var confirmar = await mostrarMensajes.MostrarMensajeConfirmacion($"¿Desea borrar a {persona.Nombre}?");
+
+        if (confirmar)
+        {
+            var responseHttp = await repositorio.Delete($"api/personas/{persona.Id}");
+
+            if (responseHttp.Error)
+            {
+                var mensajeError = await responseHttp.GetBody();
+                await mostrarMensajes.MostrarMensajeError(mensajeError);
+            }
+            else
+            {
+                await mostrarMensajes.MostrarMensajeExitoso($"Se ha eliminado a {persona.Nombre}");
+                await Cargar();
+            }
+        }
+    }
+}

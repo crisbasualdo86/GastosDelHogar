@@ -1,0 +1,20 @@
+﻿<div class="card shadow">
+    <div class="card-body">
+        <h5 class="card-title">@Persona.Nombre.ToUpper()</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Ingresos: @Persona.Ingresos.Value.ToString("C", CultureInfo.CreateSpecificCulture("es-AR"))</h6>
+        <ListadoGastosCorto Gastos="Persona.Gastos"></ListadoGastosCorto>
+        <hr />
+        <h6><strong>Total de gastos:</strong> @totalGastos.ToString("C", CultureInfo.CreateSpecificCulture("es-AR"))</h6>        
+    </div>
+</div>
+
+@code {
+    [Parameter] public Persona Persona { get; set; }
+
+    private decimal totalGastos = 0;
+
+    protected override void OnInitialized()
+    {
+        totalGastos = Persona.Gastos.Sum(x => x.Monto.Value);
+    }
+}

@@ -1,0 +1,51 @@
+﻿@typeparam T
+
+@if (Listado == null)
+{
+    @if (Cargando == null)
+    {
+        <Loading></Loading>
+    }
+    else
+    {
+        @Cargando
+    }
+}
+else if (Listado.Count == 0)
+{
+    @if (NoHayRegistros == null)
+    {
+        <div class="alert alert-info" role="alert">
+            No hay registros para mostrar
+        </div>
+    }
+    else
+    {
+        @NoHayRegistros
+    }
+}
+else
+{
+    @if (HayRegistros != null)
+    {
+        
+        @foreach (var elemento in Listado)
+        {
+            @HayRegistros(elemento)
+        }
+        
+    }
+    else
+    {
+        @HayRegistrosCompleto
+    }
+
+}
+
+@code {
+    [Parameter] public RenderFragment Cargando { get; set; }
+    [Parameter] public RenderFragment NoHayRegistros { get; set; }
+    [Parameter] public RenderFragment<T> HayRegistros { get; set; }
+    [Parameter] public RenderFragment HayRegistrosCompleto { get; set; }
+    [Parameter] public List<T> Listado { get; set; }
+}

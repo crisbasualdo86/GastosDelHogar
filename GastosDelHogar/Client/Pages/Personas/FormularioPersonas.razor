@@ -1,0 +1,25 @@
+﻿<EditForm Model="Persona" OnValidSubmit="OnValidSubmit">
+    <DataAnnotationsValidator />
+    
+    <div class="form-group">
+        <label for="inputNombre">Nombre:</label>
+        <div>
+           <InputText class="form-control" @bind-Value="@Persona.Nombre" id="inputNombre"/>
+           <ValidationMessage For="@(() => Persona.Nombre)" />
+        </div>
+    </div>
+    <div class="form-group">
+        <label for="inputIngresos">Ingresos:</label>
+        <div>
+            <InputNumber class="form-control" @bind-Value="@Persona.Ingresos" id="inputIngresos" />
+            <ValidationMessage For="@(() => Persona.Ingresos)" />
+        </div>
+    </div>  
+        
+    <button class="btn btn-success" type="submit">Guardar Cambios</button>
+</EditForm>
+
+@code {
+    [Parameter] public Persona Persona { get; set; }
+    [Parameter] public EventCallback OnValidSubmit { get; set; }
+}

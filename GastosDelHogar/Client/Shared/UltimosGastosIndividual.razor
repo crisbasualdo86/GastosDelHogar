@@ -1,0 +1,18 @@
+﻿<div class="card shadow">
+    <img src="Imagenes/imagen-gastos.jpeg" class="card-img-top" alt="gastos">
+    <div class="card-body">
+        <h5 class="card-title">@Persona.Nombre</h5>
+        <ListadoGastosCorto Gastos="Persona.Gastos" />
+        <a href="@urlGastosPersona" class="btn btn-info">Ver más</a>
+    </div>
+</div>
+
+@code {
+    [Parameter] public Persona Persona { get; set; }
+    private string urlGastosPersona;
+
+    protected override void OnInitialized()
+    {
+        urlGastosPersona = $"gastos/{Persona.Id}/{Persona?.Nombre?.Replace(" ", "-")}";
+    }
+}

@@ -1,0 +1,58 @@
+﻿@page "/gastos/editar/{GastoId:int}"
+@inject IRepositorio repositorio
+@inject IMostrarMensajes mostrarMensajes
+@inject NavigationManager navigationManager
+
+@if (gasto == null)
+{
+    <Loading></Loading>
+}
+else
+{
+    <h3>Editar Gasto</h3>
+    <div>
+        <FormularioGastos Gasto="gasto" OnValidSubmit="Editar" />
+    </div>
+}
+
+@code {
+    [Parameter] public int GastoId { get; set; }
+    private Gasto gasto;
+
+    protected async override Task OnInitializedAsync()
+    {
+        var httpResponse = await repositorio.Get<Gasto>($"api/gastos/{GastoId}");
+
+        if (httpResponse.Error)
+        {
+            if (httpResponse.HttpResponseMessage.StatusCode == System.Net.HttpStatusCode.NotFound)
+            {
+                navigationManager.NavigateTo("gastos");
+            }
+            else
+            {
+                var mensajeError = await httpResponse.GetBody();
+                await mostrarMensajes.MostrarMensajeError(mensajeError);
+            }
+        }
+        else
+        {
+            gasto = httpResponse.Response;
+        }
+    }
+
+    private async Task Editar()
+    {
+        var httpResponse = await repositorio.Put("api/gastos", gasto);
+
+        if (httpResponse.Error)
+        {
+            var mensajeError = await httpResponse.GetBody();
+            await mostrarMensajes.MostrarMensajeError(mensajeError);
+        }
+        else
+        {
+            navigationManager.NavigateTo("gastos");
+        }
+    }
+}
