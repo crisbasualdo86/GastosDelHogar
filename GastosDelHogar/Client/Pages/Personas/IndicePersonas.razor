@@ -3,7 +3,7 @@
 @inject IMostrarMensajes mostrarMensajes
 
 
-<a class="btn btn-primary mb-5" href="personas/crear">Crear Persona</a>
+<a class="btn btn-dark mb-3" href="personas/crear">Crear Persona</a>
 
 <ListadoGenerico Listado="personas">
     <HayRegistrosCompleto>
@@ -22,8 +22,8 @@
                         <td>@persona.Nombre</td>
                         <td>@persona.Ingresos.Value.ToString("C", CultureInfo.CreateSpecificCulture("es-AR"))</td>
                         <td>
-                            <a class="oi oi-pencil text-success mr-sm-3" href="/personas/editar/@persona.Id"></a>
-                            <a class="oi oi-x text-danger" @onclick="@(() => BorrarPersona(persona))" href="personas"></a>
+                            <a class="fas fa-pencil-alt text-success mr-sm-3" href="/personas/editar/@persona.Id"></a>
+                            <a class="fas fa-trash text-danger" @onclick="@(() => BorrarPersona(persona))" href="personas"></a>
                         </td>
                     </tr>
                 }

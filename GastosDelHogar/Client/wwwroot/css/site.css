@@ -14,6 +14,11 @@ a, .btn-link {
     border-color: #1861ac;
 }
 
+.btn {
+    border-radius: 35px;
+    width: 200px;
+}
+
 app {
     position: relative;
     display: flex;
@@ -59,7 +64,7 @@ app {
         font-size: 1.1rem;
     }
 
-    .sidebar .oi {
+    .sidebar .fas {
         width: 2rem;
         font-size: 1.1rem;
         vertical-align: text-top;
@@ -180,5 +185,17 @@ app {
     .sidebar .collapse {
         /* Never collapse the sidebar for wide screens */
         display: block;
+    }
+
+    .pagination > li.active > span {
+        background-color: #343a40 !important;
+        border: 1px solid #343a40 !important;
+    }
+    .page-link {
+        color: black;
+    }
+
+    .page-link:hover{
+        color: black;
     }
 }

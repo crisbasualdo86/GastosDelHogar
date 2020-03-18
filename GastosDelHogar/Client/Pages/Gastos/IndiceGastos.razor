@@ -3,7 +3,9 @@
 @inject IMostrarMensajes mostrarMensajes
 @inject NavigationManager navigationManager
 
-    <a class="btn btn-primary" href="gastos/crear">Crear Gasto</a>
+    <a class="btn btn-dark" href="gastos/crear">Crear Gasto</a>
+
+    
 
     <div class="p-3 my-3 border shadow-sm">
         <div class="row">
@@ -15,13 +17,16 @@
                            class="form-control" type="text" placeholder="Nombre" id="nombre" />
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-2">
                 <div class="form-check">
                     <input class="form-check-input" type="checkbox" id="mostrarFiltros" @bind="mostrarFiltros">
                     <label class="form-check-label" for="mostrarFiltros">
                         Mostrar filtros
                     </label>
                 </div>
+            </div>
+            <div class="col-md-4">
+                <h5>Total gastos: @totalGastos.ToString("C", CultureInfo.CreateSpecificCulture("es-AR"))</h5>
             </div>
         </div>
 
@@ -63,8 +68,8 @@
                         }
                     </select>
                 </div>
-                <button class="btn btn-primary mr-sm-2" type="button" @onclick="FiltrarGastos">Filtrar</button>
-                <button class="btn btn-danger" type="button" @onclick="LimpiarFiltros">Limpiar</button>
+                <button class="btn btn-dark mr-sm-2" type="button" style="width:100px" @onclick="FiltrarGastos">Filtrar</button>
+                <button class="btn btn-secondary" type="button" style="width:100px" @onclick="LimpiarFiltros">Limpiar</button>
             </div>
         }
 
@@ -73,9 +78,6 @@
             <Paginacion PaginaActual="paginaActual" PaginaSeleccionada="paginaSeleccionada" PaginasTotales="paginasTotales"></Paginacion>
         </div>
     </div>
-    
-    <h5>TOTAL GASTOS DEL MES: @totalGastos</h5>
-
 
 @code {
     private List<Gasto> gastos;

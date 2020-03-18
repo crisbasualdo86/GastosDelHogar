@@ -11,7 +11,6 @@
                     <th scope="col">Persona</th>
                     <th scope="col">Tipo</th>
                     <th scope="col">Descripcion</th>
-                    <th scope="col">Pagado</th>
                     <th></th>
                 </tr>
             </thead>
@@ -25,18 +24,9 @@
                     <td>@gasto.Persona.Nombre</td>
                     <td>@gasto.Tipo.Nombre</td>
                     <td>@gasto.Descripcion</td>
-
-                    @if (gasto.Pagado)
-                    {
-                        <td><span class="text-success">Si</span></td>
-                    }
-                    else
-                    {
-                        <td><span class="text-danger">No</span></td>
-                    }
                     <td>
-                        <a class="oi oi-pencil text-success mr-sm-3" href="/gastos/editar/@gasto.Id"></a>
-                        <a class="oi oi-x text-danger" @onclick="@(() => BorrarGasto.InvokeAsync(gasto))" href="gastos"></a>
+                        <a class="fas fa-pencil-alt text-success mr-sm-3" href="/gastos/editar/@gasto.Id"></a>
+                        <a class="fas fa-trash text-danger" @onclick="@(() => BorrarGasto.InvokeAsync(gasto))" href="gastos"></a>
                     </td>
                 </tr>
                 }
